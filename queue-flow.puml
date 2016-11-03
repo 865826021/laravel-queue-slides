@@ -1,0 +1,15 @@
+@startuml
+
+Reserved : 正在被消费\nqueues:default:reserved
+Ready : 等待执行\nqueues:default
+Delayed : 在将来的某个时间点执行\nqueues:default:delayed
+
+[*] -right-> Ready : push
+Ready -right-> Reserved : 有worker来消费
+Reserved -left-> Ready : 超时，或者执行失败
+
+[*] --> Delayed : later
+Delayed -up-> Ready : 时间到了
+Reserved -down-> [*] : 执行成功
+
+@enduml
